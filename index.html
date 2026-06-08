@@ -8,6 +8,12 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   :root {
     --cream: #FAF7F2;
     --warm-white: #FFF9F3;
@@ -230,7 +236,7 @@
 
   /* ─── CELEBRATION BLOCK ─────────────────── */
   .celebration-section {
-    padding: 9rem 2rem;
+    padding: 9rem clamp(1.5rem, 5vw, 5rem);
     background: var(--warm-white);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -353,7 +359,7 @@
 
   /* ─── QUOTE ─────────────────────────────── */
   .quote-section {
-    padding: 8rem 2rem;
+    padding: 8rem clamp(1.5rem, 5vw, 5rem);
     text-align: center;
     background: var(--cream);
   }
@@ -389,7 +395,12 @@
 
   /* ─── WORLD BORN SECTION ───────────────────────────── */
   .moments-section {
-    padding: 9rem 2rem;
+    padding: 9rem clamp(1.5rem, 5vw, 5rem);
+    width: 100%;
+    background: var(--warm-white);
+  }
+
+  .moments-section-inner {
     max-width: 1120px;
     margin: 0 auto;
   }
@@ -601,7 +612,7 @@
 
   /* ─── COUNTDOWN ─────────────────────────── */
   .countdown-section {
-    padding: 9rem 2rem;
+    padding: 9rem clamp(1.5rem, 5vw, 5rem);
     background: var(--twilight);
     text-align: center;
     position: relative;
@@ -705,7 +716,7 @@
 
   /* ─── WISHES ────────────────────────────── */
   .wishes-section {
-    padding: 9rem 2rem;
+    padding: 9rem clamp(1.5rem, 5vw, 5rem);
     max-width: 760px;
     margin: 0 auto;
     text-align: center;
@@ -756,7 +767,7 @@
 
   /* ─── MESSAGE ───────────────────────────── */
   .message-section {
-    padding: 9rem 2rem;
+    padding: 9rem clamp(1.5rem, 5vw, 5rem);
     background: linear-gradient(135deg, var(--warm-white) 0%, var(--cream) 100%);
     border-top: 1px solid var(--border);
     text-align: center;
@@ -888,7 +899,7 @@
 
   /* ─── CTA ───────────────────────────────── */
   .cta-section {
-    padding: 8rem 2rem;
+    padding: 8rem clamp(1.5rem, 5vw, 5rem);
     text-align: center;
     background: var(--twilight);
     position: relative;
@@ -956,6 +967,94 @@
     .moments-grid { grid-template-columns: 1fr; }
     .countdown-unit { padding: 1.5rem 2rem; }
     .message-card { padding: 2.5rem 1.5rem; }
+  }
+
+  /* ─── RESPONSIVE GLOBAL FIX ─────────────── */
+
+  /* Prevent horizontal overflow everywhere */
+  section, .hero, .message-section, .quote-section,
+  .countdown-section, .wishes-section, .moments-section,
+  .cta-section, footer {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Constrain inner content width on large screens */
+  .page-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    box-sizing: border-box;
+  }
+
+  /* Message card: never wider than its container */
+  .message-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Lang switcher: fill card width, don't overflow */
+  .lang-switcher {
+    width: 100%;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+
+  .lang-track {
+    display: flex;         /* flex instead of inline-flex */
+    width: 100%;           /* fill the card */
+    position: relative;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 4px;
+    gap: 0;
+    box-sizing: border-box;
+  }
+
+  .lang-pill {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc((100% - 8px) / 3);   /* always exactly 1/3 of track */
+    background: var(--gold);
+    border-radius: 1px;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .lang-btn {
+    flex: 1;               /* equal thirds, always */
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 0.65rem 0.5rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .lang-btn.lang-active { color: var(--ink); font-weight: 400; }
+
+  /* On narrow screens, reduce card padding so text isn't cramped */
+  @media (max-width: 480px) {
+    .message-card { padding: 2rem 1rem; }
+    .lang-btn { letter-spacing: 0.1em; font-size: 0.58rem; }
   }
 
   .spark {
@@ -1142,6 +1241,7 @@
 
 <!-- ═══ WORLD BORN SECTION ══════════════════════════════════════════ -->
 <section class="moments-section">
+<div class="moments-section-inner">
   <p class="section-label">June 8, 1998</p>
   <h2 class="section-title">How was the world<br>when you were born</h2>
 
@@ -1244,9 +1344,8 @@
     </div>
 
   </div>
-</section>
-
-<!-- ═══ COUNTDOWN ══════════════════════════════════════════ -->
+</div>
+</section> ══════════════════════════════════════════ -->
 <section class="countdown-section">
   <p class="countdown-label" id="cd-label">✦</p>
   <h2 class="countdown-title" id="cd-title"> </h2>
@@ -1547,18 +1646,14 @@ const langOrder = ['es', 'en', 'gr'];
 const pill = document.getElementById('lang-pill');
 
 function switchLang(lang) {
-  // Update pill position
   const idx = langOrder.indexOf(lang);
-  const btnWidth = document.querySelector('.lang-btn').offsetWidth;
-  pill.style.transform = `translateX(${idx * btnWidth}px)`;
-  pill.style.width = btnWidth + 'px';
+  // Pill is 1/3 of track width; move by multiples of its own width
+  pill.style.transform = `translateX(calc(${idx} * 100%))`;
 
-  // Update buttons
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('lang-active', b.dataset.lang === lang);
   });
 
-  // Swap content with fade
   document.querySelectorAll('.lang-content').forEach(el => {
     el.classList.remove('active');
     el.style.display = 'none';
@@ -1570,11 +1665,7 @@ function switchLang(lang) {
   });
 }
 
-// Init pill size on load
-window.addEventListener('load', () => {
-  const btnWidth = document.querySelector('.lang-btn').offsetWidth;
-  pill.style.width = btnWidth + 'px';
-});
+// No window.load needed — CSS handles pill sizing
 
 /* ─── COUNTDOWN (Cyprus time, UTC+3) ───────── */
 // Cyprus is UTC+3 (EEST) in June
@@ -1621,8 +1712,8 @@ function updateCountdown() {
   } else if (mode === 'during') {
     unitD.style.display = 'none';
     label.textContent   = 'Today is the day ✦';
-    title.innerHTML     = 'The exact time left<br>to celebrate your birthday is...';
-    sub.textContent     = 'Cyprus time · UTC+3 · Enjoy every second';
+    title.innerHTML     = 'El tiempo exacto restante para<br>seguir celebrando tu cumpleaños es…';
+    sub.textContent     = 'Basado en hora de Chipre · UTC+3 · Disfruta cada segundo';
   } else {
     unitD.style.display = 'none';
     label.textContent   = '✦';
